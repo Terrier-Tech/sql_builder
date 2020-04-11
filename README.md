@@ -62,6 +62,14 @@ end
 techs = builder.exec
 ```
 
+
+### Important Notes
+
+First, **SqlBuilder does not currently protect from SQL injection, so never use it with untrusted input!**
+
+Second, SqlBuilder assumes you have ActiveRecord around in order to use `SqlBuilder#exec`.
+If this isn't the case, you can always get the raw SQL using `SqlBuilder#to_sql`. 
+
 ### Computed Columns
 
 You can compute additional columns on the result set. 
