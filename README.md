@@ -10,16 +10,12 @@ You simply specify a query and SqlBuilder will generate an ad-hoc, read-only Rub
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sql_builder'
+gem 'sql_builder', git: 'git@github.com:Terrier-Tech/sql_builder.git'
 ```
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install sql_builder
 
 ## Usage
 
