@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sql-builder (0.1.0)
+    sql_builder (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -16,7 +16,7 @@ DEPENDENCIES
   bundler (~> 2.0.2)
   minitest (~> 5.0)
   rake (~> 13)
-  sql-builder!
+  sql_builder!
 
 BUNDLED WITH
    2.0.2

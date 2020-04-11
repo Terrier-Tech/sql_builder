@@ -4,14 +4,14 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "sql_builder/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "sql-builder"
+  spec.name          = "sql_builder"
   spec.version       = Sql::Builder::VERSION
   spec.authors       = ["Andy Selvig"]
   spec.email         = ["ajselvig@gmail.com"]
 
   spec.summary       = "Small Ruby library for building ad-hoc SQL queries."
   spec.description   = "Use builder pattern to create ad-hoc SQL queries that aren't tied to models but return read-only plain Ruby objects."
-  spec.homepage      = "https://github.com/Terrier-Tech/sql-builder"
+  spec.homepage      = "https://github.com/Terrier-Tech/sql_builder"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
