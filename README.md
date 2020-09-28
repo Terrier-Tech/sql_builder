@@ -105,7 +105,7 @@ locs.each do |loc|
 end
 ```
 
-NOTE: for historical reasons, as_raw is enabled by default in Clypboard 
+NOTE: for historical reasons, `.as_raw` is enabled by default in Clypboard. Use `.as_objects` to enable the Ruby object generation.
 
 ### Dialects
 
