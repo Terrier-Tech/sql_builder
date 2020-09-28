@@ -5,10 +5,11 @@ require_relative './query_row'
 # custom class derived from QueryRow containing convenience methods to access values
 class QueryResult
 
-  attr_reader :columns
+  attr_reader :columns, :column_types
 
   def initialize(raw)
     @columns = []
+    @column_types = {}
     if raw.empty?
       @array = raw
     else
@@ -67,8 +68,23 @@ class QueryResult
     @array.first
   end
 
+  def empty?
+    @array.empty?
+  end
+
   def column_names
     @columns.map{|c| c[:name]}
+  end
+
+  def set_column_type(column, type)
+    unless self.column_names.index column.to_s
+      raise "No column '#{column}' in the result"
+    end
+    unless COLUMN_TYPES.index type.to_sym
+      raise "Invalid column type '#{type}', must be one of #{COLUMN_TYPES.map(&:to_s).join(', ')}"
+    end
+    @column_types[column.to_s] = type
+    define_column_method @row_class, column.to_s
   end
 
   def as_json(options={})
@@ -123,9 +139,11 @@ class QueryResult
 
   TRUE_STRINGS = %w(1 true t)
 
+  COLUMN_TYPES = %i(raw array bool dollars time date integer float json geo string)
+
   def define_column_method(row_class, name)
     name_s = name.to_s
-    type = QueryResult.column_type name_s
+    type = @column_types[name_s] || QueryResult.column_type(name_s)
     @columns << {name: name_s, type: type}
     case type
     when :raw

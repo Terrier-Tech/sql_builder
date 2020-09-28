@@ -12,6 +12,14 @@ class SqlBuilderTest < Minitest::Test
     assert sql.downcase =~ /select\s+id, display_name, created_at from locations/
   end
 
+  def test_type_hints
+    # res = SqlBuilder.new
+    #     .select('data')
+    #     .from('locations')
+    #     .exec
+    # res.set_column_type 'data', :json
+  end
+
   def test_mssql_dialect
     limit = 100
 
