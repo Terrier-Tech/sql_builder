@@ -1,5 +1,6 @@
 require "sql_builder/version"
-require 'sql_builder/query_result'
+require "sql_builder/query_result"
+require "sql_builder/sanitization"
 
 # provides a builder interface for creating SQL queries
 class SqlBuilder
@@ -92,7 +93,8 @@ class SqlBuilder
   end
 
   def where(clause)
-    @clauses << clause
+    clause = Sanitization.new.sanitize(clause)
+    @clauses << cleaned
     self
   end
 
