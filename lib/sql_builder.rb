@@ -92,8 +92,21 @@ class SqlBuilder
     self
   end
 
+  def parse_where(clause)
+    clause.each_with_index do |entry, i|
+      if entry.is_a?(Array)
+        puts clause
+        template = clause[0].split('?')
+        template.insert(i-1, '('+('?'*entry.length).split('').join(',')+')')
+        clause[0] = template.join('?')
+        clause.delete_at(i)
+        clause.insert(i-1, *entry)
+      end
+    end
+  end
+
   def where(*clause)
-    @clauses << sanitize(clause)
+    @clauses << sanitize(parse_where(clause))
     self
   end
 

@@ -18,6 +18,7 @@ GEM
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
     concurrent-ruby (1.1.7)
+    differ (0.1.2)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     minitest (5.14.0)
@@ -33,6 +34,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   bundler (~> 2.1)
+  differ
   minitest (~> 5.0)
   pg
   rake (~> 13)
