@@ -22,16 +22,15 @@ class SqlBuilderTest < Minitest::Test
   end
 
   # Array
-  # ex: .where("status in ?", ['action', 'complete'])
+  # ex: .where("status in ?",   ['action', 'complete'])
   #   => "status in ('action', 'complete')"
   def test_where_syntax_array
     query = SqlBuilder.new
                       .select(%w(id display_name created_at))
                       .from('locations')
-                      .where("name=? and state in ? id=?","terrier", ["foo","bar"], 1)
+                      .where("name=? and state in ? and id=?","terrier", ["foo","bar"], 1)
     sql = query.to_sql
-    puts sql
-    assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(name in \('foo','bar'\)\)/
+    assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(name='terrier' and state in \('foo','bar'\) and id=1\)/
   end
 
   # Number

@@ -95,12 +95,12 @@ class SqlBuilder
   def parse_where(clause)
     clause.each_with_index do |entry, i|
       if entry.is_a?(Array)
-        puts clause
         template = clause[0].split('?')
-        template.insert(i-1, '('+('?'*entry.length).split('').join(',')+')')
-        clause[0] = template.join('?')
+        template = template.map.with_index {|phrase, index| index==i-1 ? phrase : phrase+'?' }
+        template.insert(i, '('+('?'*entry.length).split('').join(',')+')')
+        clause[0] = template.join('')
         clause.delete_at(i)
-        clause.insert(i-1, *entry)
+        clause.insert(i, *entry)
       end
     end
   end
