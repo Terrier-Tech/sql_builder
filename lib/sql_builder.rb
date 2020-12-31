@@ -1,6 +1,6 @@
 require "sql_builder/version"
 require "sql_builder/query_result"
-require "sql_builder/sanitization"
+require "active_record"
 
 # provides a builder interface for creating SQL queries
 class SqlBuilder
@@ -92,9 +92,14 @@ class SqlBuilder
     self
   end
 
-  def where(clause)
-    clause = Sanitization.new.sanitize(clause)
-    @clauses << cleaned
+  def build_where_clause(*clause)
+    #build where clause using .where("technician_id=? and location_id=?", foo, bang)
+    clause
+  end
+
+  def where(*clause)
+    clause = build_where_clause(clause)
+    @clauses << sanitize(Array(clause))
     self
   end
 
@@ -190,8 +195,12 @@ class SqlBuilder
     s
   end
 
+  def sanitize(query)
+    ActiveRecord::Base.sanitize_sql(query)
+  end
+
   def exec
-    results = ActiveRecord::Base.connection.execute(self.to_sql).to_a
+    results = ActiveRecord::Base.connection.execute(sanitize(self.to_sql)).to_a
     if @make_objects
       QueryResult.new results
     else
