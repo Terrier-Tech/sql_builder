@@ -4,8 +4,7 @@ class SqlBuilderTest < Minitest::Test
 
     #== string
     def test_sanitize_string
-        #clean
-        branch = "Robert; DROP TABLE Locations;"
+        branch = "Robert; DROP TABLE Locations;" #pwned
         location = "bang"
 
         query = SqlBuilder.new
@@ -14,10 +13,7 @@ class SqlBuilderTest < Minitest::Test
         .where("branch_id=? or location_id=?", branch, location)
         sql = query.to_sql
         puts sql.downcase
-        assert sql.downcase =~ /select\s+id, display_name, created_at from locations/ #TODO fix expected output
-
-        #injection
-
+        assert sql.downcase =~ /select\s+id, display_name, created_at from locations/
     end
 
 end

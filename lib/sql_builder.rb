@@ -92,14 +92,8 @@ class SqlBuilder
     self
   end
 
-  def build_where_clause(*clause)
-    #build where clause using .where("technician_id=? and location_id=?", foo, bang)
-    clause
-  end
-
   def where(*clause)
-    clause = build_where_clause(clause)
-    @clauses << sanitize(Array(clause))
+    @clauses << sanitize(clause)
     self
   end
 
@@ -200,7 +194,7 @@ class SqlBuilder
   end
 
   def exec
-    results = ActiveRecord::Base.connection.execute(sanitize(self.to_sql)).to_a
+    results = ActiveRecord::Base.connection.execute(self.to_sql).to_a
     if @make_objects
       QueryResult.new results
     else
