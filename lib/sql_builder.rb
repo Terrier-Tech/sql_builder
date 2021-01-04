@@ -1,5 +1,6 @@
 require "sql_builder/version"
-require 'sql_builder/query_result'
+require "sql_builder/query_result"
+require "active_record"
 
 # provides a builder interface for creating SQL queries
 class SqlBuilder
@@ -91,8 +92,21 @@ class SqlBuilder
     self
   end
 
-  def where(clause)
-    @clauses << clause
+  def parse_where(clause)
+    clause.each_with_index do |entry, i|
+      if entry.is_a?(Array)
+        template = clause[0].split('?')
+        template = template.map.with_index {|phrase, index| index==i-1 ? phrase : phrase+'?' }
+        template.insert(i, '('+('?'*entry.length).split('').join(',')+')')
+        clause[0] = template.join('')
+        clause.delete_at(i)
+        clause.insert(i, *entry)
+      end
+    end
+  end
+
+  def where(*clause)
+    @clauses << sanitize(parse_where(clause))
     self
   end
 
@@ -186,6 +200,10 @@ class SqlBuilder
       s += " FETCH FIRST #{@fetch_next} ROWS ONLY"
     end
     s
+  end
+
+  def sanitize(query)
+    ActiveRecord::Base.sanitize_sql(query)
   end
 
   def exec
