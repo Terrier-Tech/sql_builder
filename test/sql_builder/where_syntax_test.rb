@@ -38,8 +38,8 @@ class SqlBuilderTest < Minitest::Test
     query = SqlBuilder.new
                       .select(%w(id display_name created_at))
                       .from('locations')
-                      .where("id=?", 1234)
+                      .where("id=?", 123.4)
     sql = query.to_sql
-    assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(id=1234\)/
+    assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(id=123.4\)/
   end
 end
