@@ -2,6 +2,15 @@ require "sql_builder/version"
 require "sql_builder/query_result"
 require "active_record"
 
+#Monkey Patch
+module ActiveRecord
+  class Base
+    class << self
+      public :sanitize_sql_array
+    end
+  end
+end
+
 # provides a builder interface for creating SQL queries
 class SqlBuilder
 
@@ -203,7 +212,11 @@ class SqlBuilder
   end
 
   def sanitize(query)
-    ActiveRecord::Base.sanitize_sql(query)
+    if ActiveRecord::Base.respond_to? :sanitize_sql
+      ActiveRecord::Base.sanitize_sql query
+    else
+      ActiveRecord::Base.sanitize_sql_array query
+    end
   end
 
   def exec

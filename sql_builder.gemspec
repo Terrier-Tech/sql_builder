@@ -26,6 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.1"
   spec.add_development_dependency "rake", "~> 13"
   spec.add_development_dependency "minitest", "~> 5.0"
-  spec.add_development_dependency "activerecord"
-  spec.add_development_dependency "pg"
+  spec.add_development_dependency "activerecord", ">=4.0", "<5.0"
+  spec.add_development_dependency "pg", "~> 0.18"
 end
