@@ -5,7 +5,7 @@ require "active_record"
 
 class Minitest::Test
   # Config
-  db_config       = YAML::load(File.open('test/database.yml'))
+  db_config       = YAML::load(File.open('test/config/database.yml'))
   db_config_admin = db_config.merge({'database' => 'postgres', 'schema_search_path' => 'public'})
 
   # Delete DB
