@@ -61,7 +61,7 @@ techs = builder.exec
 
 ### Important Notes
 
-First, **SqlBuilder does not currently protect from SQL injection, so never use it with untrusted input!**
+First, **SqlBuilder now sanitizes input!**, this utilizes ActiveRecord's (4.2's) ```sanitize_sql_array``` method to do the heavy lifting. You may opt for a more recent version of ActiveRecord in which case it will use the ```sanitize``` method.
 
 Second, SqlBuilder assumes you have ActiveRecord around in order to use `SqlBuilder#exec`.
 If this isn't the case, you can always get the raw SQL using `SqlBuilder#to_sql`. 
