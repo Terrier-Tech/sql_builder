@@ -25,4 +25,12 @@ class SqlBuilderTest < Minitest::Test
         assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(name='robert''; drop table locations;' or id=1234\)/
     end
 
+    def test_escape_percent_symbol
+        query = SqlBuilder.new
+                          .select(%w(id display_name created_at))
+                          .from('locations')
+                          .where("payment.created_by_name ilike '%portal%' OR u.role = 'customer'")
+        sql = query.to_sql
+        assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(payment.created_by_name ilike '%portal%' or u.role = 'customer'\)/
+    end
 end

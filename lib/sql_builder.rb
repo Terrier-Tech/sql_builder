@@ -212,6 +212,11 @@ class SqlBuilder
   end
 
   def sanitize(query)
+    query.each_with_index do |entry, i| #need to escape %
+      if entry.is_a?(String)
+        query[i] = entry.gsub('%', '%%')
+      end
+    end
     if ActiveRecord::Base.respond_to? :sanitize_sql
       ActiveRecord::Base.sanitize_sql query
     else
