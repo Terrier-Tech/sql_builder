@@ -21,8 +21,8 @@ class Minitest::Test
   # ~LOCATIONS Table~
   # Columns
   # +-------------------+-------------------+---------------+
-  # | id                | int               | primary key   /
-  # | name              | text              |               /
+  # | id                | int               | primary key   |
+  # | name              | text              |               |
   # +-------------------+-------------------+---------------+
 
   # Populate DB
