@@ -18,6 +18,13 @@ class Minitest::Test
   ActiveRecord::Base.connection.create_database(db_config["database"])
   puts "Database created."
 
+  # ~LOCATIONS Table~
+  # Columns
+  # +-------------------+-------------------+---------------+
+  # | id                | int               | primary key   /
+  # | name              | text              |               /
+  # +-------------------+-------------------+---------------+
+
   # Populate DB
   ActiveRecord::Base.establish_connection(db_config)
   create_table = 'CREATE TABLE locations ( id int primary key, name text)'

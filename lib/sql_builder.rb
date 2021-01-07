@@ -224,16 +224,19 @@ class SqlBuilder
     end
   end
 
+  def check_result_limit!(query)
+    if query.count == @the_limit
+      raise "Query result has exactly #{@the_limit} results, which is the same as the Limit #{@the_limit}"
+    end
+    query
+  end
+
   def exec
     results = ActiveRecord::Base.connection.execute(self.to_sql).to_a
-    res = nil
     if @make_objects
-      res = QueryResult.new results
+      check_result_limit!(QueryResult.new results)
     else
-      res = results
-    end
-    if res.count == @the_limit
-      raise "Query Result has same number of records as limit"
+      check_result_limit!(results)
     end
   end
 
