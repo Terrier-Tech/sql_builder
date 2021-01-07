@@ -226,10 +226,14 @@ class SqlBuilder
 
   def exec
     results = ActiveRecord::Base.connection.execute(self.to_sql).to_a
+    res = nil
     if @make_objects
-      QueryResult.new results
+      res = QueryResult.new results
     else
-      results
+      res = results
+    end
+    if res.count == @the_limit
+      raise "Query Result has same number of records as limit"
     end
   end
 
