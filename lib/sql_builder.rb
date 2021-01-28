@@ -13,7 +13,7 @@ end
 
 # provides a builder interface for creating SQL queries
 class SqlBuilder
-
+  DEFAULT_LIMIT = 10000
   ATTRS = %w(selects clauses distincts froms joins order_bys group_bys havings withs dialect)
 
   attr_accessor *ATTRS
@@ -30,8 +30,9 @@ class SqlBuilder
     ATTRS.each do |attr|
       self.send "#{attr}=", []
     end
+
     @make_objects = @@default_make_objects
-    @the_limit = 10000
+    @the_limit = DEFAULT_LIMIT
     @row_offset = nil
     @fetch_next = nil
     @dialect = :psql
@@ -225,8 +226,8 @@ class SqlBuilder
   end
 
   def check_result_limit!(query)
-    if query.count == @the_limit
-      raise "Query result has exactly #{@the_limit} results, which is the same as the Limit #{@the_limit}"
+    if query.count == @the_limit and @the_limit == DEFAULT_LIMIT
+      raise "Query result has exactly #{@the_limit} results, which is the same as the Default Limit of #{DEFAULT_LIMIT}"
     end
     query
   end

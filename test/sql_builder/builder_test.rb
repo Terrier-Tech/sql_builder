@@ -40,15 +40,14 @@ class SqlBuilderTest < Minitest::Test
     assert query.index("LIMIT #{limit}")
   end
 
-  def test_result_limit_check
-    query = SqlBuilder.new
-                      .select(%w(id))
-                      .from('locations')
-                      .where("id=? or id=? or id=?", 1, 2, 3)
-                      .limit(3)
-
-    err = assert_raises(RuntimeError) { query.exec }
-    assert_match /Query result has exactly 3 results, which is the same as the Limit 3/, err.message
-  end
+  # def test_result_limit_check
+  #   query = SqlBuilder.new
+  #                     .select(%w(id))
+  #                     .from('locations')
+  #
+  #   err = assert_raises(RuntimeError) { query.exec }
+  #
+  #   assert_match /Query result has exactly 3 results, which is the same as the Limit 3/, err.message
+  # end
 
 end
