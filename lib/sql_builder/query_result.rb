@@ -90,13 +90,13 @@ class QueryResult
   def set_column_order(order)
     new_columns = []
     order.each do |name|
-      self.columns.each do |set|
+      @columns.each do |set|
         if set[:name] == name
           new_columns.append set
         end
       end
     end
-    self.columns = new_columns
+    @columns = new_columns
   end
 
   def as_json(options={})
