@@ -87,6 +87,18 @@ class QueryResult
     define_column_method @row_class, column.to_s
   end
 
+  def set_column_order(order)
+    new_columns = []
+    order.each do |name|
+      self.columns.each do |set|
+        if set[:name] == name
+          new_columns.append set
+        end
+      end
+    end
+    self.columns = new_columns
+  end
+
   def as_json(options={})
     @array.map do |row|
       row.as_json options
