@@ -1,5 +1,5 @@
 module Sql
   module Builder
-    VERSION = "1.1.61"
+    VERSION = "1.1.611"
   end
 end
