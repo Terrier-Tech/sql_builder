@@ -87,7 +87,26 @@ class SqlBuilder
     self
   end
 
-  def inner_join(table, as, clause)
+  def inner_join(arg1, arg2=nil, arg3=nil)
+    if arg2.nil? && arg3.nil?
+      # work_orders AS wo
+      table = arg1.split(' ').first
+      as = arg1.split(' ').last
+
+      parent_table = self.froms.first
+      foreign_key = parent_table.singularize
+      clause = "#{as}.#{foreign_key} = #{parent_table}.id"
+    else if arg3.nil?
+      # work_orders AS wo
+      table = arg1.split(' ').first
+      as = arg1.split(' ').last
+      # locations.id
+      clause = "#{as}.id = #{arg3}"
+    else
+      table = arg1
+      as = arg3
+      clause = arg3
+    end
     @joins << "INNER JOIN #{table} AS #{as} ON #{clause}"
     self
   end
