@@ -96,7 +96,7 @@ class SqlBuilder
       parent_table = self.froms.first
       foreign_key = parent_table.singularize
       clause = "#{as}.#{foreign_key} = #{parent_table}.id"
-    else if arg3.nil?
+    elsif arg3.nil?
       # work_orders AS wo
       table = arg1.split(' ').first
       as = arg1.split(' ').last
