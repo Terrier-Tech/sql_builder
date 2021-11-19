@@ -104,7 +104,7 @@ class SqlBuilder
       clause = "#{as}.id = #{arg3}"
     else
       table = arg1
-      as = arg3
+      as = arg2
       clause = arg3
     end
     @joins << "INNER JOIN #{table} AS #{as} ON #{clause}"
