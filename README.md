@@ -29,8 +29,8 @@ locs = SqlBuilder.new
   .select(%w(first_name last_name), 'tech', 'technician_') 
   .from('locations', 'loc') # table name, alias
   .left_join('users', 'tech', 'tech.id = loc.primary_technician_id') # table name, alias, clause
-  .where("loc.zip = '55124'") # plain string clause
-  .where("tech.first_name = 'Billy'")
+  .where("loc.zip = ?", '55124') # plain string clause
+  .where("tech.first_name = ?", 'Billy')
   .exec
 
 # returns an array of POROs with attributes location_city, location_state, 
@@ -49,10 +49,10 @@ builder = SqlBuilder.new
   .select(%w(first_name last_name), 'tech')
   .from('users', 'tech')
   .where('tech._state = 0')
-  .where("tech.role = 'technician'")
+  .where("tech.role = ?", 'technician')
 
 if branch_id
-  builder.where("tech.branch_id = '#{branch_id}'")
+  builder.where("tech.branch_id = ?", branch_id)
 end
 
 techs = builder.exec
@@ -96,7 +96,7 @@ locs = SqlBuilder.new
   .select(%w(first_name last_name), 'tech', 'technician_') 
   .from('locations')
   .inner_join('users', 'tech', 'tech.id = loc.primary_technician_id')
-  .where("zip = '55124'")
+  .where("zip = ?", '55124')
   .as_raw
   .exec
 
