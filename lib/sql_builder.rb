@@ -88,9 +88,9 @@ class SqlBuilder
       table = arg1.split(' ').first
       as = arg1.split(' ').last
 
-      parent_table = self.froms.first
-      foreign_key = "#{parent_table.singularize}_id"
-      clause = "#{as}.#{foreign_key} = #{parent_table}.id"
+      child_table = self.froms.first
+      foreign_key = "#{table.singularize}_id"
+      clause = "#{child_table}.#{foreign_key} = #{as}.id"
     elsif arg3.nil?
       # work_orders AS wo
       table = arg1.split(' ').first
@@ -112,9 +112,9 @@ class SqlBuilder
       table = arg1.split(' ').first
       as = arg1.split(' ').last
 
-      parent_table = self.froms.first
-      foreign_key = "#{parent_table.singularize}_id"
-      clause = "#{as}.#{foreign_key} = #{parent_table}.id"
+      child_table = self.froms.first
+      foreign_key = "#{table.singularize}_id"
+      clause = "#{child_table}.#{foreign_key} = #{as}.id"
     elsif arg3.nil?
       # work_orders AS wo
       table = arg1.split(' ').first
