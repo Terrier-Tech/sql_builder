@@ -84,7 +84,7 @@ class SqlBuilder
 
   def left_join(arg1, arg2=nil, arg3=nil)
     if arg2.nil? && arg3.nil?
-      # work_orders AS wo
+      # 'work_orders AS wo'
       table = arg1.split(' ').first
       as = arg1.split(' ').last
 
@@ -92,10 +92,9 @@ class SqlBuilder
       foreign_key = "#{table.singularize}_id"
       clause = "#{child_table}.#{foreign_key} = #{as}.id"
     elsif arg3.nil?
-      # work_orders AS wo
+      # 'work_orders AS wo', 'inspection_items.work_order_id'
       table = arg1.split(' ').first
       as = arg1.split(' ').last
-      # locations.id
       clause = "#{as}.id = #{arg2}"
     else
       table = arg1
@@ -108,7 +107,7 @@ class SqlBuilder
 
   def inner_join(arg1, arg2=nil, arg3=nil)
     if arg2.nil? && arg3.nil?
-      # work_orders AS wo
+      # 'work_orders AS wo'
       table = arg1.split(' ').first
       as = arg1.split(' ').last
 
@@ -116,10 +115,9 @@ class SqlBuilder
       foreign_key = "#{table.singularize}_id"
       clause = "#{child_table}.#{foreign_key} = #{as}.id"
     elsif arg3.nil?
-      # work_orders AS wo
+      # 'work_orders AS wo', 'inspection_items.work_order_id'
       table = arg1.split(' ').first
       as = arg1.split(' ').last
-      # locations.id
       clause = "#{as}.id = #{arg2}"
     else
       table = arg1
