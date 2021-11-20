@@ -96,7 +96,7 @@ class SqlBuilder
       table = arg1.split(' ').first
       as = arg1.split(' ').last
       # locations.id
-      clause = "#{as}.id = #{arg3}"
+      clause = "#{as}.id = #{arg2}"
     else
       table = arg1
       as = arg2
@@ -120,7 +120,7 @@ class SqlBuilder
       table = arg1.split(' ').first
       as = arg1.split(' ').last
       # locations.id
-      clause = "#{as}.id = #{arg3}"
+      clause = "#{as}.id = #{arg2}"
     else
       table = arg1
       as = arg2
