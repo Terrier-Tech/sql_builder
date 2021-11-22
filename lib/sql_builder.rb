@@ -82,8 +82,7 @@ class SqlBuilder
     self
   end
 
-  # 1 and 2 arg options can only join parent tables
-  def left_join(arg1, arg2=nil, arg3=nil)
+  def get_join_opts(arg1, arg2, arg3)
     if arg2.nil? && arg3.nil?
       # 'work_orders AS wo'
       table = arg1.split(' ').first
@@ -102,40 +101,31 @@ class SqlBuilder
       as = arg2
       clause = arg3
     end
+    [table, as, clause]
+  end
+
+  # 1 and 2 arg options can only join parent tables
+  def left_join(arg1, arg2=nil, arg3=nil)
+    table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "LEFT JOIN #{table} AS #{as} ON #{clause}"
     self
   end
 
   # 1 and 2 arg options can only join parent tables
   def inner_join(arg1, arg2=nil, arg3=nil)
-    if arg2.nil? && arg3.nil?
-      # 'work_orders AS wo'
-      table = arg1.split(' ').first
-      as = arg1.split(' ').last
-
-      child_table = self.froms.first
-      foreign_key = "#{table.singularize}_id"
-      clause = "#{child_table}.#{foreign_key} = #{as}.id"
-    elsif arg3.nil?
-      # 'work_orders AS wo', 'inspection_items.work_order_id'
-      table = arg1.split(' ').first
-      as = arg1.split(' ').last
-      clause = "#{as}.id = #{arg2}"
-    else
-      table = arg1
-      as = arg2
-      clause = arg3
-    end
+    table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "INNER JOIN #{table} AS #{as} ON #{clause}"
     self
   end
 
-  def outer_join(table, as, clause)
+  def outer_join(arg1, arg2=nil, arg3=nil)
+    table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "LEFT OUTER JOIN #{table} AS #{as} ON #{clause}"
     self
   end
 
-  def right_join(table, as, clause)
+  def right_join(arg1, arg2=nil, arg3=nil)
+    table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "RIGHT JOIN #{table} AS #{as} ON #{clause}"
     self
   end
