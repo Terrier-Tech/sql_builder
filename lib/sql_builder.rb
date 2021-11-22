@@ -82,7 +82,7 @@ class SqlBuilder
     self
   end
 
-  # 1 and 2 arg options can only join child tables
+  # 1 and 2 arg options can only join parent tables
   def left_join(arg1, arg2=nil, arg3=nil)
     if arg2.nil? && arg3.nil?
       # 'work_orders AS wo'
@@ -106,7 +106,7 @@ class SqlBuilder
     self
   end
 
-  # 1 and 2 arg options can only join child tables
+  # 1 and 2 arg options can only join parent tables
   def inner_join(arg1, arg2=nil, arg3=nil)
     if arg2.nil? && arg3.nil?
       # 'work_orders AS wo'
