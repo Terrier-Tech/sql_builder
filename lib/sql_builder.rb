@@ -83,6 +83,7 @@ class SqlBuilder
   end
 
   def get_join_opts(arg1, arg2, arg3)
+    # 1 and 2 arg options can only join parent tables
     if arg2.nil? && arg3.nil?
       # 'work_orders AS wo'
       table = arg1.split(' ').first
@@ -104,14 +105,13 @@ class SqlBuilder
     [table, as, clause]
   end
 
-  # 1 and 2 arg options can only join parent tables
+
   def left_join(arg1, arg2=nil, arg3=nil)
     table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "LEFT JOIN #{table} AS #{as} ON #{clause}"
     self
   end
 
-  # 1 and 2 arg options can only join parent tables
   def inner_join(arg1, arg2=nil, arg3=nil)
     table, as, clause = get_join_opts arg1, arg2, arg3
     @joins << "INNER JOIN #{table} AS #{as} ON #{clause}"
