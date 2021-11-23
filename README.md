@@ -66,6 +66,34 @@ First, **SqlBuilder now sanitizes input!**, this utilizes ActiveRecord's(v4.2) `
 Second, SqlBuilder assumes you have ActiveRecord around in order to use `SqlBuilder#exec`.
 If this isn't the case, you can always get the raw SQL using `SqlBuilder#to_sql`. 
 
+### Joins
+
+SqlBuilder current offers 4 join commands `left_join`, `inner_join`, `outer_join`, and `right_join`.  Any of these can take one of three combinations of arguments:
+
+```ruby
+# base_query
+inspection_items = SqlBuilder.new
+    .select('inspection_items.*')
+    
+# the following three examples will add the following join clause: INNER JOIN work_orders AS wo ON wo.id = inspection_items.work_order_id
+# three args can be used to add any join (parent or child)
+inspection_items.inner_join('work_orders', 'wo', 'wo.id = inspection_items.work_order_id')
+
+# two args can only be used to add a parent table join
+inspection_items.inner_join('work_orders AS wo', 'inspection_items.work_order_id')
+
+# one arg can only be used to add a parent table join
+inspection_items.inner_join('work_orders AS wo')
+
+
+# note that the 2 arg variation can be used to join a table that does not have a traditional foreign_key
+work_orders = SqlBuilder.new
+    .select('work_orders.*')
+
+work_orders.inner_join('users', 'work_orders.technician_id')
+```
+
+
 ### Computed Columns
 
 You can compute additional columns on the result set. 
