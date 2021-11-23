@@ -68,7 +68,7 @@ If this isn't the case, you can always get the raw SQL using `SqlBuilder#to_sql`
 
 ### Joins
 
-SqlBuilder current offers 4 join commands `left_join`, `inner_join`, `outer_join`, and `right_join`.  Any of these can take one of three combinations of arguments:
+SqlBuilder offers 4 join commands `left_join`, `inner_join`, `outer_join`, and `right_join`.  Any of these can take one of three combinations of arguments (all strings):
 
 ```ruby
 # base_query
