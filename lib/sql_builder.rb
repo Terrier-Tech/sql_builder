@@ -90,7 +90,7 @@ class SqlBuilder
       as = arg1.split(' ').last
 
       if self.froms.blank?
-        raise 'must declare a from statement to use 2 argument join'
+        raise 'must declare a from statement to use 1 argument join'
       end
       child_table = self.froms.first.split(' ').last
       foreign_key = "#{table.singularize}_id"
