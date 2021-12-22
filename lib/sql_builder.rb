@@ -14,11 +14,15 @@ end
 # provides a builder interface for creating SQL queries
 class SqlBuilder
   DEFAULT_LIMIT = 10000
-  ATTRS = %w(selects clauses distincts froms joins order_bys group_bys havings withs dialect)
 
-  attr_accessor *ATTRS
+  # attributes that are arrays and should be included in serialization
+  ARRAY_ATTRS = %w[selects clauses distincts froms joins order_bys group_bys havings withs]
 
-  attr_accessor :the_limit, :make_objects, :row_offset, :fetch_next
+  attr_accessor(*ARRAY_ATTRS)
+
+  # attributes that are scalars and should be included in serialization
+  SCALAR_ATTRS = %w[the_limit make_objects row_offset fetch_next the_dialect]
+  attr_accessor(*SCALAR_ATTRS)
 
   @@default_make_objects = true
 
@@ -27,7 +31,7 @@ class SqlBuilder
   end
 
   def initialize
-    ATTRS.each do |attr|
+    ARRAY_ATTRS.each do |attr|
       self.send "#{attr}=", []
     end
 
@@ -35,7 +39,7 @@ class SqlBuilder
     @the_limit = DEFAULT_LIMIT
     @row_offset = nil
     @fetch_next = nil
-    @dialect = :psql
+    @the_dialect = :psql
   end
 
 
@@ -45,13 +49,13 @@ class SqlBuilder
 
   def dialect(new_dialect=nil)
     if new_dialect.nil?
-      return @dialect # make this method act like a getter as well
+      return @the_dialect # make this method act like a getter as well
     end
     new_dialect = new_dialect.to_sym
     unless DIALECTS.index new_dialect
       raise "Invalid dialect #{new_dialect}, must be one of: #{DIALECTS.join(', ')}"
     end
-    @dialect = new_dialect
+    @the_dialect = new_dialect
     self
   end
 
@@ -192,7 +196,7 @@ class SqlBuilder
   def to_sql
     _distinct = ''
     if @distincts and @distincts.count > 0
-      if @dialect == :mssql
+      if @the_dialect == :mssql
         _distinct += 'DISTINCT ('
         _distinct += @distincts.join(', ')
         _distinct += ')'
@@ -207,7 +211,7 @@ class SqlBuilder
       "WITH #{w}"
     end.join(' ')
 
-    top_s = if @the_limit && @dialect == :mssql
+    top_s = if @the_limit && @the_dialect == :mssql
       "TOP #{@the_limit}"
     else
       ''
@@ -227,15 +231,15 @@ class SqlBuilder
     if @order_bys.length > 0
       s += " ORDER BY #{@order_bys.join(', ')}"
     end
-    if @the_limit && @dialect != :mssql
+    if @the_limit && @the_dialect != :mssql
       s += " LIMIT #{@the_limit}"
     end
-    if @row_offset && @dialect == :mssql
+    if @row_offset && @the_dialect == :mssql
       s += " OFFSET #{@row_offset} ROWS"
     elsif @row_offset
       s += " OFFSET #{@row_offset}"
     end
-    if @fetch_next && @dialect == :mssql
+    if @fetch_next && @the_dialect == :mssql
       s += " FETCH NEXT #{@fetch_next} ROWS ONLY"
     elsif @fetch_next
       s += " FETCH FIRST #{@fetch_next} ROWS ONLY"
@@ -274,7 +278,7 @@ class SqlBuilder
 
   def dup
     other = SqlBuilder.new
-    ATTRS.each do |attr|
+    (ARRAY_ATTRS + SCALAR_ATTRS).each do |attr|
       other.send "#{attr}=", self.send(attr).dup
     end
     other.make_objects = @make_objects
@@ -294,7 +298,7 @@ class SqlBuilder
 
   def self.from_raw(raw)
     builder = SqlBuilder.new
-    ATTRS.each do |attr|
+    (ARRAY_ATTRS + SCALAR_ATTRS).each do |attr|
       if raw[attr]
         builder.send "#{attr}=", raw[attr]
       end
