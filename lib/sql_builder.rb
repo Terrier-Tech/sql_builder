@@ -2,7 +2,7 @@ require "sql_builder/version"
 require "sql_builder/query_result"
 require "active_record"
 
-#Monkey Patch
+# Monkey Patch
 module ActiveRecord
   class Base
     class << self
@@ -28,6 +28,14 @@ class SqlBuilder
 
   def self.default_make_objects=(val)
     @@default_make_objects = val
+  end
+
+  class << self
+    # This should mimic the behavior of ActiveRecord::Base.default_timezone
+    # i.e. it's either :utc (default) or :local
+    attr_accessor :default_timezone
+
+    @default_timezone = :utc
   end
 
   def initialize

@@ -18,6 +18,7 @@ class QueryResult
         @row_class.new self, raw_row
       end
     end
+    @default_timezone = SqlBuilder.default_timezone
   end
 
   def each
@@ -197,7 +198,12 @@ class QueryResult
         raw_time = self.instance_variable_get('@raw')[name_s]
         case raw_time
         when String
-          time = Time.parse(raw_time)
+          # always return times in the local timezone
+          if @default_timezone == :local
+            time = Time.parse raw_time
+          else # assume database times are in UTC
+            time = raw_time.in_time_zone('UTC').getlocal
+          end
           self.instance_variable_get('@raw')[name_s] = time
           time
         else
