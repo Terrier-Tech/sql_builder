@@ -225,7 +225,9 @@ class SqlBuilder
       ''
     end
 
-    s = "#{withs_s} SELECT #{top_s} #{_distinct} #{@selects.join(', ')} FROM #{@froms.join(', ')} #{@joins.join(' ')}"
+    froms_s = @froms.empty? ? '' : "FROM #{@froms.join(', ')}"
+
+    s = "#{withs_s} SELECT #{top_s} #{_distinct} #{@selects.join(', ')} #{froms_s} #{@joins.join(' ')}"
     if @clauses.length > 0
       clauses_s = @clauses.map{|c| "(#{c})"}.join(' AND ')
       s += "  WHERE #{clauses_s}"

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class SqlBuilderTest < Minitest::Test
+class WhereSyntaxTest < Minitest::Test
   # String
   def test_where_syntax_string
     query = SqlBuilder.new

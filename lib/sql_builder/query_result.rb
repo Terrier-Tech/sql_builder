@@ -169,7 +169,8 @@ class QueryResult
       row_class.define_method name do
         val = self.instance_variable_get('@raw')[name_s]
         if val.is_a? String
-          val.parse_postgres_array
+          # this might not be the best implementation
+          val.gsub('{', '').gsub('}', '').gsub('"', '').split(',')
         else
           val
         end
@@ -298,12 +299,12 @@ class QueryResult
       return :integer
     end
     RAW_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :raw
       end
     end
     ARRAY_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :array
       end
     end
@@ -313,17 +314,17 @@ class QueryResult
       end
     end
     DOLLARS_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :dollars
       end
     end
     TIME_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :time
       end
     end
     DATE_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :date
       end
     end
@@ -331,7 +332,7 @@ class QueryResult
       return :integer
     end
     INTEGER_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :integer
       end
     end
@@ -341,17 +342,17 @@ class QueryResult
       end
     end
     FLOAT_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :float
       end
     end
     GEO_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :geo
       end
     end
     JSON_SUFFIXES.each do |suffix|
-      if key_s.ends_with?(suffix)
+      if key_s.end_with?(suffix)
         return :json
       end
     end
