@@ -255,10 +255,11 @@ class QueryResult
       end
     when :json
       row_class.define_method name do
-        JSON.parse self.instance_variable_get('@raw')[name_s]
+        raw = self.instance_variable_get('@raw')[name_s]
+        raw ? JSON.parse(raw) : nil
       end
       row_class.define_method "#{name}=" do |val|
-        self.instance_variable_get('@raw')[name_s] = val.as_json
+        self.instance_variable_get('@raw')[name_s] = val&.as_json
       end
     when :geo
       row_class.define_method name do
