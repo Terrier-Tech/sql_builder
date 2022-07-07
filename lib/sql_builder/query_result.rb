@@ -290,7 +290,7 @@ class QueryResult
   INTEGER_SUFFIXES = %w(number count duration _i)
   INTEGER_PREFIXES = %w(days_since days_until)
   FLOAT_SUFFIXES = %w(_m _miles distance latitude longitude _score _f)
-  JSON_SUFFIXES = %w(weather)
+  JSON_SUFFIXES = %w(object_array json_array json weather)
   GEO_SUFFIXES = %w(geo)
 
   def self.column_type(key)
@@ -301,6 +301,11 @@ class QueryResult
     RAW_SUFFIXES.each do |suffix|
       if key_s.end_with?(suffix)
         return :raw
+      end
+    end
+    JSON_SUFFIXES.each do |suffix| # do json before arrays so we can use *object_array and *json_array
+      if key_s.end_with?(suffix)
+        return :json
       end
     end
     ARRAY_SUFFIXES.each do |suffix|
@@ -349,11 +354,6 @@ class QueryResult
     GEO_SUFFIXES.each do |suffix|
       if key_s.end_with?(suffix)
         return :geo
-      end
-    end
-    JSON_SUFFIXES.each do |suffix|
-      if key_s.end_with?(suffix)
-        return :json
       end
     end
     :string

@@ -13,5 +13,22 @@ class QueryResultTest < Minitest::Test
     assert 'one', row.an_array.first
   end
 
+  def test_object_arrays
+    loc_count = SqlBuilder.new.select('count(*)').from('locations').exec.first.count
+
+    res = SqlBuilder.new
+        .select("json_agg(json_build_object('name', name, 'id', id)) as locs_json")
+        .from('locations')
+        .group_by('true')
+        .exec
+    assert 1, res.count
+    row = res.first
+    array = row.locs_json
+    assert Array, array.class
+    assert loc_count, array.count
+    assert Hash, array.first.class
+    assert '1', array.first['name']
+  end
+
 
 end
