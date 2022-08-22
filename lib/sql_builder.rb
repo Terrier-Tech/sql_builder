@@ -185,10 +185,12 @@ class SqlBuilder
 
   def offset(offset)
     @row_offset = offset
+    self
   end
 
   def fetch(fetch)
     @fetch_next = fetch
+    self
   end
 
   def distinct(distinct, table=nil)
