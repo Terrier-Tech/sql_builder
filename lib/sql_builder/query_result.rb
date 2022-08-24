@@ -48,6 +48,13 @@ class QueryResult
     end
   end
 
+  def index_by
+    return @array.to_enum(:index_by) unless block_given?
+    @array.index_by do |row|
+      yield row
+    end
+  end
+
   def sort_by
     self.to_a.sort_by
   end
