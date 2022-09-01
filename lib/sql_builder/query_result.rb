@@ -123,10 +123,10 @@ class QueryResult
   end
 
   # computes a new column by evaluating a block for every row
-  def compute_column(name)
+  def compute_column(name, type=nil)
     return unless @row_class # empty result
     name_s = name.to_s
-    define_column_method @row_class, name_s
+    define_column_method @row_class, name_s, type
     each do |row|
       new_val = yield row
       row.send "#{name}=", new_val
@@ -160,9 +160,12 @@ class QueryResult
 
   COLUMN_TYPES = %i(raw array bool dollars time date integer float json geo string)
 
-  def define_column_method(row_class, name)
+  def define_column_method(row_class, name, type=nil)
     name_s = name.to_s
-    type = @column_types[name_s] || QueryResult.column_type(name_s)
+    type ||= @column_types[name_s] || QueryResult.column_type(name_s)
+    unless COLUMN_TYPES.index type.to_sym
+      raise "Invalid column type '#{type}', must be one of #{COLUMN_TYPES.map(&:to_s).join(', ')}"
+    end
     @columns << {name: name_s, type: type}
     case type
     when :raw
