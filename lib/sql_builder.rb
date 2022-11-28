@@ -276,7 +276,7 @@ class SqlBuilder
 
   def check_result_limit!(query)
     if query.count == @the_limit and @limit_warning
-      raise "Query result has exactly #{@the_limit} results, which is the same as the Default Limit of #{DEFAULT_LIMIT}"
+      raise "Query result has exactly #{@the_limit} results, which is the same as the limit of #{@the_limit}"
     end
     query
   end
