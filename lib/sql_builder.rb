@@ -45,6 +45,7 @@ class SqlBuilder
 
     @make_objects = @@default_make_objects
     @the_limit = DEFAULT_LIMIT
+    @limit_warning = true
     @row_offset = nil
     @fetch_next = nil
     @the_dialect = :psql
@@ -178,7 +179,8 @@ class SqlBuilder
     self
   end
 
-  def limit(limit)
+  def limit(limit, limit_warning=false)
+    @limit_warning = limit_warning
     @the_limit = limit
     self
   end
@@ -273,7 +275,7 @@ class SqlBuilder
   end
 
   def check_result_limit!(query)
-    if query.count == @the_limit and @the_limit == DEFAULT_LIMIT
+    if query.count == @the_limit and @limit_warning
       raise "Query result has exactly #{@the_limit} results, which is the same as the Default Limit of #{DEFAULT_LIMIT}"
     end
     query
