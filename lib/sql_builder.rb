@@ -70,7 +70,7 @@ class SqlBuilder
 
   def from(table, as=nil)
     if as
-      @froms << "#{table} as #{as}"
+      @froms << "#{table} AS #{as}"
     else
       @froms << table
     end
