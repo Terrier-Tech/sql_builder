@@ -159,6 +159,13 @@ class SqlBuilder
     end
   end
 
+  # Adds a where clause without any sanitization or substitution
+  # This is essentially for clauses containing a `?`
+  def where_raw(clause)
+    @clauses << clause
+    self
+  end
+
   def where(*clause)
     @clauses << sanitize(parse_where(clause))
     self
