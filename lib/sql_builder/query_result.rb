@@ -137,13 +137,14 @@ class QueryResult
   # the block should return a hash of new column values
   def compute_columns
     return unless @row_class # empty result
-    columns_defined = false
+    columns_defined = @columns.pluck(:name).map { |key| [key.to_s, true] }.to_h
     each do |row|
       new_vals = yield row
-      unless columns_defined
-        columns_defined = true
-        new_vals.each_key do |name|
-          define_column_method @row_class, name.to_s
+      new_vals.each_key do |name|
+        name=name.to_s
+        unless columns_defined[name]
+          define_column_method @row_class, name
+          columns_defined[name]=true
         end
       end
       new_vals.each do |key, val|
