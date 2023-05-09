@@ -24,7 +24,7 @@ class QueryRow
     value = self.send(column[:name])
     case column[:type]
     when :time
-      value&.to_s
+      value&.as_json
     else
       value
     end
