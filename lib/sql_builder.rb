@@ -171,6 +171,15 @@ class SqlBuilder
     self
   end
 
+  # Adds a WHERE EXISTS clause that evaluates whether a subquery returns at least one result
+  # @param clause [SqlBuilder, String] the subquery. Can be either a sql string or a SqlBuilder object
+  def exists(clause)
+    unless clause.is_a? String
+      clause = clause.to_sql
+    end
+    where_raw("EXISTS (#{clause})")
+  end
+
   def having(clause)
     @havings << clause
     self
