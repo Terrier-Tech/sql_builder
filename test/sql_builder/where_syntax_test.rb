@@ -42,4 +42,21 @@ class WhereSyntaxTest < Minitest::Test
     sql = query.to_sql
     assert sql.downcase =~ /select\s+id, display_name, created_at from locations\s+where\s+\(id=123.4\)/
   end
+
+  # Exists
+  def test_where_exists
+    subquery = SqlBuilder.new
+      .select('id')
+      .from('users', 'subordinate')
+      .where('subordinate.reports_to_id = manager.id')
+      .limit(nil)
+    query = SqlBuilder.new
+      .select(%w[id first_name last_name])
+      .from('users', 'manager')
+      .exists(subquery)
+      .limit(nil)
+    sql = query.to_sql
+    assert_equal sql.downcase.squish, "select id, first_name, last_name from users as manager where (exists ( select id from users as subordinate where (subordinate.reports_to_id = manager.id)))"
+
+  end
 end
