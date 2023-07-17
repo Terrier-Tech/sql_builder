@@ -19,7 +19,7 @@ class QueryResultTest < Minitest::Test
     res = SqlBuilder.new
         .select("json_agg(json_build_object('name', name, 'id', id)) as locs_json")
         .from('locations')
-        .group_by('true')
+        .group_by("substring(name, 0, 1)")
         .exec
     assert 1, res.count
     row = res.first
