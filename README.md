@@ -2,7 +2,7 @@
 
 SqlBuilder is a small, simple Ruby library that lets you compose SQL queries using a fluent, builder syntax.
 
-This is *not* an ORM and does require any schema definition or mapping. 
+This is *not* an ORM and does not require any schema definition or mapping. 
 You simply specify a query and SqlBuilder will generate an ad-hoc, read-only Ruby class to represent the result.
 
 ## Installation
