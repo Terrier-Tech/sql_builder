@@ -292,7 +292,7 @@ class QueryResult
 
   private
 
-  ARRAY_SUFFIXES = %w(_array tags ies recipients _ids)
+  ARRAY_SUFFIXES = %w(_array tags ies recipients _ids badges)
   BOOL_PREFIXES = %w(is_)
   RAW_SUFFIXES = %w(_items lanes certs)
   DOLLARS_SUFFIXES = %w(price dollars total tax _value amount balance)
