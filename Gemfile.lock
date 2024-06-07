@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sql_builder (1.4.0)
+    sql_builder (1.4.1)
 
 GEM
   remote: https://rubygems.org/
