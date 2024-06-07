@@ -59,6 +59,16 @@ class QueryResult
     self.to_a.sort_by
   end
 
+  def pluck(*args)
+    self.map do |row|
+      if args.length == 1
+        row.send args.first
+      else
+        args.map { |arg| row.send arg }
+      end
+    end
+  end
+
   def to_a
     @array
   end

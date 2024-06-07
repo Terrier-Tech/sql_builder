@@ -30,5 +30,15 @@ class QueryResultTest < Minitest::Test
     assert '1', array.first['name']
   end
 
+  def test_pluck_with_single_string_argument
+    assert_equal [0, 1], SqlBuilder.new.select("*").from("locations").order_by("id").limit(2).as_objects.exec.pluck("id")
+  end
 
+  def test_pluck_with_single_symbol_argument
+    assert_equal [0, 1], SqlBuilder.new.select("*").from("locations").order_by("id").limit(2).as_objects.exec.pluck(:id)
+  end
+
+  def test_pluck_with_multiple_arguments
+    assert_equal [[0, "location_0"], [1, "location_1"]], SqlBuilder.new.select("*").from("locations").order_by("id").limit(2).as_objects.exec.pluck(:id, :name)
+  end
 end
