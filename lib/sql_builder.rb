@@ -297,8 +297,9 @@ class SqlBuilder
     query
   end
 
-  def exec
-    results = ActiveRecord::Base.connection.execute(self.to_sql).to_a
+  def exec(conn=nil)
+    conn ||= ActiveRecord::Base.connection
+    results = conn.execute(self.to_sql).to_a
     if @make_objects
       check_result_limit!(QueryResult.new results)
     else
