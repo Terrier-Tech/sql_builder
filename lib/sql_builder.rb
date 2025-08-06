@@ -90,8 +90,14 @@ class SqlBuilder
     self
   end
 
-  def with(w)
-    @withs << w
+  def with(arg1, arg2=nil)
+    if arg2.nil?
+      # single argument, assume it's a full cte expression
+      @withs << arg1
+    else
+      # two arguments, assume first argument is cte alias and arg2 is the actual query
+      @withs << "#{arg1} as (#{arg2})"
+    end
     self
   end
 
@@ -235,9 +241,7 @@ class SqlBuilder
       end
     end
 
-    withs_s = @withs.map do |w|
-      "WITH #{w}"
-    end.join(' ')
+    withs_s = "WITH #{@withs.join(', ')}"
 
     top_s = if @the_limit && @the_dialect == :mssql
       "TOP #{@the_limit}"
