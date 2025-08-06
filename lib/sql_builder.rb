@@ -241,7 +241,7 @@ class SqlBuilder
       end
     end
 
-    withs_s = "WITH #{@withs.join(', ')}"
+    withs_s = @withs.present? ? "WITH #{@withs.join(', ')}" : ""
 
     top_s = if @the_limit && @the_dialect == :mssql
       "TOP #{@the_limit}"
