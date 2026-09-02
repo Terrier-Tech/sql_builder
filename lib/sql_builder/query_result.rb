@@ -84,6 +84,7 @@ class QueryResult
   end
 
   def set_column_type(column, type)
+    return unless @row_class # empty result
     unless self.column_names.index column.to_s
       raise "No column '#{column}' in the result"
     end
