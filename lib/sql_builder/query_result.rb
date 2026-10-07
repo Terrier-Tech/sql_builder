@@ -209,6 +209,8 @@ class QueryResult
       row_class.define_method name do
         raw_time = self.instance_variable_get('@raw')[name_s]
         case raw_time
+        when ""
+          nil
         when String
           # always return times in the local timezone
           if SqlBuilder.default_timezone == :local
@@ -229,6 +231,8 @@ class QueryResult
       row_class.define_method name do
         raw_date = self.instance_variable_get('@raw')[name_s]
         case raw_date
+        when ""
+          nil
         when String
           date = Date.parse(raw_date)
           self.instance_variable_get('@raw')[name_s] = date
